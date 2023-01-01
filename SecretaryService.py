@@ -1,11 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 import smtplib
-from account import *
+from account import *  # headers, FROM_ADDRESS, TO_ADDRESS, EMAIL_PASSWORD 변수를 저장한 파일입니다.
 from email.message import EmailMessage
 
 def setup(url):
-    res = requests.get(url, headers=headers)    
+    res = requests.get(url, headers=headers)    # User-Agent
     res.raise_for_status()
     soup = BeautifulSoup(res.text, "lxml")
     return soup
@@ -82,15 +82,15 @@ def sendmail():
     msg = EmailMessage()
     content = set_content()
     msg["Subject"] = "SecretaryService"
-    msg["From"] = FROM_ADDRESS
-    msg["To"] = TO_ADDRESS
+    msg["From"] = FROM_ADDRESS # 보내는 사람
+    msg["To"] = TO_ADDRESS # 받는 사람
 
     msg.set_content(content)
 
     with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
         smtp.ehlo()
         smtp.starttls()
-        smtp.login(FROM_ADDRESS, EMAIL_PASSWORD)
+        smtp.login(FROM_ADDRESS, EMAIL_PASSWORD)  # 앱 비밀번호
         smtp.send_message(msg)
 
 if __name__ == "__main__":
